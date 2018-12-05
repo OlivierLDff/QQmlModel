@@ -27,8 +27,7 @@ Project {
             fileTags: ["txt"]
             files: [
                 "src/QQmlObjectListModel.cpp",
-                "src/QQmlVariantListModel.cpp",
-                "src/QQmlGadgetListModel.cpp"
+                "src/QQmlVariantListModel.cpp"
             ]
         }
         Group {
@@ -36,7 +35,6 @@ Project {
             files: [
                 "src/QQmlObjectListModel.h",
                 "src/QQmlVariantListModel.h",
-                "src/QQmlGadgetListModel.h",
                 "src/QtQmlTricksPlugin_SmartDataModels.h",
             ]
         }

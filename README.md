@@ -95,8 +95,6 @@ INCLUDE(path/to/BuildQQmlModel.cmake)
 
 * [Thomas Boutroue](mailto:thomas.boutroue@gmail.com) :
   * Initial work.
-* [vpicaver](https://github.com/OlivierLDff/QQmlModel/commits?author=vpicaver) :
-  * Add QQmlGadgetListModel.
 * [Olivier Le Doeuff](olivier.ldff@gmail.com) : 
   * CMake support for the library.
   * Doxygen doc generation via CMake target `QQmlModelDoc`.

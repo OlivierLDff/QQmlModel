@@ -7,7 +7,7 @@
 #include "QQmlObjectListModel.h"
 #include "QQmlVariantListModel.h"
 
-QQML_MODEL_API_ static void registerQtQmlTricksSmartDataModel (QQmlEngine * engine) {
+static void registerQtQmlTricksSmartDataModel (QQmlEngine * engine) {
     Q_UNUSED (engine)
 
     const char * uri = "QtQmlTricks.SmartDataModels"; // @uri QtQmlTricks.SmartDataModels

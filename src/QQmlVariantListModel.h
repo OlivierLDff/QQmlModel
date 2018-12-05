@@ -10,7 +10,7 @@
 
 QQML_MODEL_NAMESPACE_START
 
-class QQML_MODEL_API_ QQmlVariantListModel : public QAbstractListModel {
+class QQmlVariantListModel : public QAbstractListModel {
     Q_OBJECT
     Q_PROPERTY (int count READ count NOTIFY countChanged)
 

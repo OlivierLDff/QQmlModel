@@ -125,15 +125,12 @@ ENDIF((QQML_MODEL_BUILD_SHARED AND QQML_MODEL_BUILD_STATIC) OR (NOT QQML_MODEL_B
 
 SET( QQML_MODEL_SRCS 
 	# Main
-	${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlGadgetListModel.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlGadgetListModel.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlObjectListModel.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlObjectListModel.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlVariantListModel.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlVariantListModel.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/QtQmlTricksPlugin_SmartDataModels.h
 
-	${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlGadgetListModel
 	${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlObjectListModel
 	${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlVariantListModel
 	)
