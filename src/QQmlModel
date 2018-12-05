@@ -1,0 +1,3 @@
+#include "QQmlModelShared.h"
+#include "QQmlObjectListModel"
+#include "QQmlVariantListModel"

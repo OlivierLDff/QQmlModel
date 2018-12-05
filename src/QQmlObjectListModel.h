@@ -23,7 +23,7 @@
     for (typename QList<_type_ *>::const_iterator it = _list_.begin (); it != _list_.end (); it++) \
         for (_type_ * _var_ = static_cast<_type_ *> (* it); _var_ != Q_NULLPTR; _var_ = Q_NULLPTR)
 
-class QQmlObjectListModelBase : public QAbstractListModel { // abstract Qt base class
+class QQML_MODEL_API_ QQmlObjectListModelBase : public QAbstractListModel { // abstract Qt base class
     Q_OBJECT
     Q_PROPERTY (int count READ count NOTIFY countChanged)
 
@@ -57,7 +57,7 @@ signals: // notifier
     void countChanged (void);
 };
 
-template<class ItemType> class QQmlObjectListModel : public QQmlObjectListModelBase {
+template<class ItemType> class QQML_MODEL_API_ QQmlObjectListModel : public QQmlObjectListModelBase {
 public:
     explicit QQmlObjectListModel (QObject *          parent      = Q_NULLPTR,
                                   const QByteArray & displayRole = QByteArray (),

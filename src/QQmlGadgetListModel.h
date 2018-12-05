@@ -18,7 +18,7 @@
 #include <QVector>
 #include "QQmlModelShared.h"
 
-class QQmlGadgetListModelBase : public QAbstractListModel { // abstract Qt base class
+class QQML_MODEL_API_ QQmlGadgetListModelBase : public QAbstractListModel { // abstract Qt base class
     Q_OBJECT
     Q_PROPERTY (int count READ count NOTIFY countChanged)
 
@@ -61,7 +61,7 @@ signals: // notifier
     void countChanged (void);
 };
 
-template<class ItemType> class QQmlGadgetListModel : public QQmlGadgetListModelBase {
+template<class ItemType> class QQML_MODEL_API_ QQmlGadgetListModel : public QQmlGadgetListModelBase {
 public:
     explicit QQmlGadgetListModel (QObject *          parent      = Q_NULLPTR,
                                   const QByteArray & displayRole = QByteArray (),
