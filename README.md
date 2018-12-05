@@ -1,6 +1,8 @@
 Qt QML Models
 =============
 
+*This fork aimed is to add CMake build functionality to this library*
+
 Additional data models aimed to bring more power to QML applications by using useful C++ models in back-end.
 
 * `QQmlObjectListModel` : a much nicer way to expose C++ list to QML than the quick & dirty `QList<QObject*>` property . Supports all the strong model features of `QAbstractListModel` while showing the simple and well know API of QList.
