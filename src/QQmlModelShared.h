@@ -13,6 +13,23 @@
 	#define QQML_MODEL_API_
 #endif
 
+#ifdef QQML_MODEL_USE_NAMESPACE
+#ifndef QQML_MODEL_NAMESPACE_NAME
+#define QQML_MODEL_NAMESPACE_NAME Qqm
+#endif
+#define QQML_MODEL_NAMESPACE_START namespace QQML_MODEL_NAMESPACE_NAME {
+#define QQML_MODEL_NAMESPACE_END }
+#define QQML_MODEL_USING_NAMESPACE using namespace QQML_MODEL_NAMESPACE_NAME;
+#else
+#undef QQML_MODEL_NAMESPACE_NAME
+#define QQML_MODEL_NAMESPACE_NAME
+#define QQML_MODEL_NAMESPACE_START
+#define QQML_MODEL_NAMESPACE_END
+#define QQML_MODEL_USING_NAMESPACE
+#endif
+
+QQML_MODEL_NAMESPACE_START
+
 template<typename T> QList<T> qListFromVariant (const QVariantList & list) {
     QList<T> ret;
     ret.reserve (list.size ());
@@ -47,5 +64,7 @@ public:
 	/** Get version in form major.minor.patch.tag */
 	static QString GetVersion();
 };
+
+QQML_MODEL_NAMESPACE_END
 
 #endif

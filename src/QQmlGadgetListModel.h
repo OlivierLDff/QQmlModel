@@ -18,6 +18,8 @@
 #include <QVector>
 #include "QQmlModelShared.h"
 
+QQML_MODEL_NAMESPACE_START
+
 class QQML_MODEL_API_ QQmlGadgetListModelBase : public QAbstractListModel { // abstract Qt base class
     Q_OBJECT
     Q_PROPERTY (int count READ count NOTIFY countChanged)
@@ -392,5 +394,7 @@ private: // data members
     QList<ItemType>            m_items;
     QHash<QString, ItemType*>  m_indexByUid;
 };
+
+QQML_MODEL_NAMESPACE_END
 
 #endif // QQMLOBJECTLISTMODEL_H

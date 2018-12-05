@@ -18,6 +18,8 @@
 
 #include "QQmlModelShared.h"
 
+QQML_MODEL_NAMESPACE_START
+
 // custom foreach for QList, which uses no copy and check pointer non-null
 #define FOREACH_PTR_IN_QLIST(_type_, _var_, _list_) \
     for (typename QList<_type_ *>::const_iterator it = _list_.begin (); it != _list_.end (); it++) \
@@ -419,5 +421,7 @@ private: // data members
     QList<ItemType *>          m_items;
     QHash<QString, ItemType *> m_indexByUid;
 };
+
+QQML_MODEL_NAMESPACE_END
 
 #endif // QQMLOBJECTLISTMODEL_H

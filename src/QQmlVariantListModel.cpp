@@ -6,6 +6,8 @@
 #define EMPTY_STR QStringLiteral ("")
 #define EMPTY_BA  QByteArrayLiteral ("")
 
+QQML_MODEL_USING_NAMESPACE
+
 /*!
     \class QQmlVariantListModel
 

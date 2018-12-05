@@ -8,6 +8,8 @@
 
 #include "QQmlModelShared.h"
 
+QQML_MODEL_NAMESPACE_START
+
 class QQML_MODEL_API_ QQmlVariantListModel : public QAbstractListModel {
     Q_OBJECT
     Q_PROPERTY (int count READ count NOTIFY countChanged)
@@ -49,5 +51,7 @@ private:
     QVariantList           m_items;
     QHash<int, QByteArray> m_roles;
 };
+
+QQML_MODEL_NAMESPACE_END
 
 #endif // QQMLVARIANTLISTMODEL_H

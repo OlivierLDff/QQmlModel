@@ -23,6 +23,8 @@ The CMake can build the library either as a static or a shared library. It can a
 - **QQML_MODEL_PROJECT** : Name of the project. *Default : "QQmlModel"*
 - **QQML_MODEL_BUILD_SHARED** : Build shared library [ON OFF]. *Default: OFF.*
 - **QQML_MODEL_BUILD_STATIC** : Build static library [ON OFF]. *Default: ON.*
+- **QQML_MODEL_USE_NAMESPACE** : If the library compile with a namespace. *Default: OFF.*
+- **QQML_MODEL_NAMESPACE** : Namespace for the library. Only relevant if `QQML_MODEL_USE_NAMESPACE` is ON. *Default: "Qqm".*
 - **QQML_MODEL_BUILD_DOC** : Build the QQmlModel Doc [ON OFF]. *Default: OFF.*
 - **QQML_MODEL_DOXYGEN_BT_REPOSITORY** : Repository of DoxygenBt. *Default : "https://github.com/OlivierLDff/DoxygenBootstrappedCMake.git"*
 - **QQML_MODEL_DOXYGEN_BT_TAG** : Git Tag of DoxygenBt. *Default : "v1.3.0"*
@@ -99,3 +101,4 @@ INCLUDE(path/to/BuildQQmlModel.cmake)
   * Move code into `src/` folder & Update QMake script to use the new folder.
   * Update `.gitignore` to allow in source building.
   * Move common declaration between Object and Gadget to `QQmlModelShared.h`
+  * Namespace support.
