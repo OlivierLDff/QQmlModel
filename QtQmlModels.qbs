@@ -9,7 +9,7 @@ Project {
         targetName: "QtQmlModels";
 
         Export {
-            cpp.includePaths: ".";
+            cpp.includePaths: "./src";
 
             Depends { name: "cpp"; }
             Depends {
@@ -26,18 +26,18 @@ Project {
             name: "C++ template sources";
             fileTags: ["txt"]
             files: [
-                "QQmlObjectListModel.cpp",
-                "QQmlVariantListModel.cpp",
-                "QQmlGadgetListModel.cpp"
+                "src/QQmlObjectListModel.cpp",
+                "src/QQmlVariantListModel.cpp",
+                "src/QQmlGadgetListModel.cpp"
             ]
         }
         Group {
             name: "C++ headers";
             files: [
-                "QQmlObjectListModel.h",
-                "QQmlVariantListModel.h",
-                "QQmlGadgetListModel.h",
-                "QtQmlTricksPlugin_SmartDataModels.h",
+                "src/QQmlObjectListModel.h",
+                "src/QQmlVariantListModel.h",
+                "src/QQmlGadgetListModel.h",
+                "src/QtQmlTricksPlugin_SmartDataModels.h",
             ]
         }
         Group {

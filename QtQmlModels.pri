@@ -3,13 +3,13 @@
 
 QT += core qml
 
-INCLUDEPATH += $$PWD
+INCLUDEPATH += $$PWD/src
 
 HEADERS += \
-    $$PWD/QQmlObjectListModel.h \
-    $$PWD/QQmlVariantListModel.h
+    $$PWD/src/QQmlObjectListModel.h \
+    $$PWD/src/QQmlVariantListModel.h
 
 SOURCES += \
-    $$PWD/QQmlObjectListModel.cpp \
-    $$PWD/QQmlVariantListModel.cpp
+    $$PWD/src/QQmlObjectListModel.cpp \
+    $$PWD/src/QQmlVariantListModel.cpp
 
