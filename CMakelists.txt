@@ -101,7 +101,7 @@ SET( QQML_MODEL_VERSION_TAG_HEX 0x${QQML_MODEL_VERSION_TAG})
 # │						  STATUS 	 								 │
 # └──────────────────────────────────────────────────────────────────┘
 
-MESSAGE( STATUS  "------ ${QQML_MODEL_TARGET} Configuration ------" )
+MESSAGE( STATUS  "------ ${QQML_MODEL_TARGET} Configuration ${QQML_MODEL_VERSION} ------" )
 
 MESSAGE( STATUS "QQML_MODEL_TARGET                 : ${QQML_MODEL_TARGET}" )
 MESSAGE( STATUS "QQML_MODEL_PROJECT                : ${QQML_MODEL_PROJECT}" )
