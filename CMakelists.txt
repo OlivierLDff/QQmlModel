@@ -23,6 +23,7 @@
 #
 ## VERSION
 #	- 1.0.0 : 05/12/2018 : Initial Work
+# 	- 1.0.1 : Fix DoxygenBootstrapped github link
 
 # ┌──────────────────────────────────────────────────────────────────┐
 # │						  CMAKE PROPERTIES							 │
@@ -79,7 +80,7 @@ FIND_PACKAGE(Qt5Qml REQUIRED)
 # Project version must be set here
 SET(QQML_MODEL_VERSION_MAJOR 1)
 SET(QQML_MODEL_VERSION_MINOR 0)
-SET(QQML_MODEL_VERSION_PATCH 0)
+SET(QQML_MODEL_VERSION_PATCH 1)
 
 IF( EXISTS "${CMAKE_SOURCE_DIR}/.git" )
 	EXECUTE_PROCESS(
