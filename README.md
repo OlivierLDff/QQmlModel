@@ -9,8 +9,6 @@ Additional data models aimed to bring more power to QML applications by using us
 
 * `QQmlVariantListModel` : a dead-simple way to create a dynamic C++ list of any type and expose it to QML, way better than using a `QVariantList` property.
 
-> NOTE : If you want to donate, use this link : [![Flattr this](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=thebootroo&url=http://gitlab.unique-conception.org/qt-qml-tricks/qt-qml-models)
-
 ## CMake
 
 The CMake can build the library either as a static or a shared library. It can also generate a doxygen website.
@@ -102,3 +100,6 @@ INCLUDE(path/to/BuildQQmlModel.cmake)
   * Update `.gitignore` to allow in source building.
   * Move common declaration between Object and Gadget to `QQmlModelShared.h`
   * Namespace support.
+  
+  
+> NOTE : If you want to donate to Thomas Boutroue, use this link : [![Flattr this](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=thebootroo&url=http://gitlab.unique-conception.org/qt-qml-tricks/qt-qml-models)
