@@ -11,7 +11,7 @@
 #	- QQML_MODEL_USE_NAMESPACE : If the library compile with a namespace. Default: OFF.
 #	- QQML_MODEL_NAMESPACE : Namespace for the library. Only relevant if QQML_MODEL_USE_NAMESPACE is ON. Default: "Qqm".
 #	- QQML_MODEL_BUILD_DOC : Build the QQmlModel Doc [ON OFF]. Default: OFF.
-#	- QQML_MODEL_DOXYGEN_BT_REPOSITORY : Repository of DoxygenBt. Default : "https://github.com/OlivierLDff/DoxygenBootstrappedCMake.git"
+#	- QQML_MODEL_DOXYGEN_BT_REPOSITORY : Repository of DoxygenBt. Default : "https://github.com/OlivierLDff/DoxygenBootstrapped.git"
 #	- QQML_MODEL_DOXYGEN_BT_TAG : Git Tag of DoxygenBt. Default : "v1.3.0"
 
 #
@@ -23,6 +23,7 @@
 #
 ## VERSION
 #	- 1.0.0 : 05/12/2018 : Initial Work
+# 	- 1.0.1 : Fix DoxygenBootstrapped github link
 
 # ┌──────────────────────────────────────────────────────────────────┐
 # │						  CMAKE PROPERTIES							 │
@@ -79,7 +80,7 @@ FIND_PACKAGE(Qt5Qml REQUIRED)
 # Project version must be set here
 SET(QQML_MODEL_VERSION_MAJOR 1)
 SET(QQML_MODEL_VERSION_MINOR 0)
-SET(QQML_MODEL_VERSION_PATCH 0)
+SET(QQML_MODEL_VERSION_PATCH 2)
 SET(QQML_MODEL_VERSION ${QQML_MODEL_VERSION_MAJOR}.${QQML_MODEL_VERSION_MINOR}.${QQML_MODEL_VERSION_PATCH} CACHE STRING "Version")
 
 IF( EXISTS "${CMAKE_SOURCE_DIR}/.git" )
