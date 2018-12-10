@@ -441,10 +441,10 @@ private: // data members
     QHash<QString, ItemType *> m_indexByUid;
 };
 
-#define QML_OBJMODEL_PROPERTY(type, name) \
-    protected: Q_PROPERTY (QQmlObjectListModelBase * name READ get_##name CONSTANT) \
-    private: QQmlObjectListModel<type> * m_##name; \
-    public: QQmlObjectListModel<type> * get_##name (void) const { return m_##name; } \
+#define QQML_MODEL_OBJ_PROPERTY(type, name, Name) \
+    protected: Q_PROPERTY (QQmlObjectListModelBase * name READ get##Name CONSTANT) \
+    private: QQmlObjectListModel<type> * _##name; \
+    public: QQmlObjectListModel<type> * get##Name (void) const { return _##name; } \
     private:
 
 QQML_MODEL_NAMESPACE_END
