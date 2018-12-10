@@ -25,7 +25,7 @@ The CMake can build the library either as a static or a shared library. It can a
 - **QQML_MODEL_NAMESPACE** : Namespace for the library. Only relevant if `QQML_MODEL_USE_NAMESPACE` is ON. *Default: "Qqm".*
 - **QQML_MODEL_BUILD_DOC** : Build the QQmlModel Doc [ON OFF]. *Default: OFF.*
 - **QQML_MODEL_DOXYGEN_BT_REPOSITORY** : Repository of DoxygenBt. *Default : "https://github.com/OlivierLDff/DoxygenBootstrappedCMake.git"*
-- **QQML_MODEL_DOXYGEN_BT_TAG** : Git Tag of DoxygenBt. *Default : "v1.3.0"*
+- **QQML_MODEL_DOXYGEN_BT_TAG** : Git Tag of DoxygenBt. *Default : "v1.3.2"*
 
 #### Output
 
@@ -85,7 +85,7 @@ SET( QQML_MODEL_BUILD_DOC OFF )
 SET( QQML_MODEL_BUILD_DOC OFF )
 SET( QQML_MODEL_USE_NAMESPACE ON )
 SET( QQML_MODEL_REPOSITORY "https://github.com/OlivierLDff/QQmlModel.git" )
-SET( QQML_MODEL_TAG v1.0.0 )
+SET( QQML_MODEL_TAG v1.0.4 )
 INCLUDE(path/to/BuildQQmlModel.cmake)
 ```
 

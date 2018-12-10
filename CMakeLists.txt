@@ -24,6 +24,7 @@
 ## VERSION
 #	- 1.0.0 : 05/12/2018 : Initial Work
 # 	- 1.0.1 : Fix DoxygenBootstrapped github link
+# 	- 1.0.4 : Fix CMakeLists filename
 
 # ┌──────────────────────────────────────────────────────────────────┐
 # │						  CMAKE PROPERTIES							 │
@@ -48,7 +49,7 @@ SET( QQML_MODEL_NAMESPACE "Qqm" CACHE STRING "Namespace for the library. Only re
 SET( QQML_MODEL_BUILD_DOC OFF CACHE BOOL "Build QQmlModel Doc with Doxygen" )
 IF(QQML_MODEL_BUILD_DOC)
 SET( QQML_MODEL_DOXYGEN_BT_REPOSITORY "https://github.com/OlivierLDff/DoxygenBootstrappedCMake.git" CACHE STRING "Repository of DoxygenBt" )
-SET( QQML_MODEL_DOXYGEN_BT_TAG v1.3.0 CACHE STRING "Git Tag of DoxygenBt" )
+SET( QQML_MODEL_DOXYGEN_BT_TAG v1.3.2 CACHE STRING "Git Tag of DoxygenBt" )
 ENDIF(QQML_MODEL_BUILD_DOC)
 
 PROJECT( ${QQML_MODEL_PROJECT} )
@@ -82,7 +83,7 @@ FIND_PACKAGE(Qt5Qml REQUIRED)
 # Project version must be set here
 SET(QQML_MODEL_VERSION_MAJOR 1)
 SET(QQML_MODEL_VERSION_MINOR 0)
-SET(QQML_MODEL_VERSION_PATCH 3)
+SET(QQML_MODEL_VERSION_PATCH 4)
 SET(QQML_MODEL_VERSION ${QQML_MODEL_VERSION_MAJOR}.${QQML_MODEL_VERSION_MINOR}.${QQML_MODEL_VERSION_PATCH} CACHE STRING "Version")
 
 IF( EXISTS "${CMAKE_SOURCE_DIR}/.git" )
