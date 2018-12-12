@@ -1,6 +1,9 @@
 #ifndef QQMLMODELSHARED_H
 #define QQMLMODELSHARED_H
 
+#include <QQmlEngine>
+#include <QtQml>
+
 #ifdef WIN32
 	#ifdef QQML_MODEL_SHARED	// Shared build
 		#define QQML_MODEL_API_ __declspec(dllexport)
@@ -44,6 +47,8 @@ public:
 	/** Get version in form major.minor.patch.tag */
 	static QString GetVersion();
 };
+
+	static void registerQtQmlTricksSmartDataModel(QQmlEngine* engine);
 
 QQML_MODEL_NAMESPACE_END
 

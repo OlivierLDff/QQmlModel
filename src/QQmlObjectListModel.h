@@ -53,24 +53,65 @@ public:
     explicit QQmlObjectListModelBase (QObject * parent = Q_NULLPTR) : QAbstractListModel (parent) { }
 
 public slots: // virtual methods API for QML
+	/** Returns the number of items in the list. */
     virtual int size (void) const = 0;
+	/** This function is provided for STL compatibility. 
+	 * It is equivalent to isEmpty() and returns true if the list is empty. */
     virtual int count (void) const = 0;
+	/** Returns true if the list contains no items; otherwise returns false. */
     virtual bool isEmpty (void) const = 0;
+	/** Returns true if the list contains an occurrence of value; otherwise returns false.
+	 * This function requires the value type to have an implementation of operator==(). */
     virtual bool contains (QObject * item) const = 0;
+	/** Returns the index position of the first occurrence of value in the list, 
+	 * searching forward from index position from. Returns -1 if no item matched.
+	 * \param item ptr the item you want the index of */
     virtual int indexOf (QObject * item) const = 0;
+	/** Get the role id of name, -1 if role not found */
     virtual int roleForName (const QByteArray & name) const = 0;
+	/** Removes all items from the list. It won't delete any object */
     virtual void clear (void) = 0;
+	/** Inserts value at the end of the list.
+	 * This is the same as list.insert(size(), value). 
+	 * If this list is not shared, this operation is typically 
+	 * very fast (amortized constant time), 
+	 * because QList preallocates extra space on both sides of 
+	 * its internal buffer to allow for fast growth at both ends of the list.
+	 */
     virtual void append (QObject * item) = 0;
+	/** Inserts value at the beginning of the list. 
+	 * This is the same as list.insert(0, value).
+	 * If this list is not shared, this operation is typically very fast
+	 * (amortized constant time), because QList preallocates extra space
+	 * on both sides of its internal buffer to allow for fast growth at 
+	 * both ends of the list.
+	 */
     virtual void prepend (QObject * item) = 0;
+	/** Inserts value at index position i in the list. 
+	 * If i <= 0, the value is prepended to the list. 
+	 * If i >= size(), the value is appended to the list. */
     virtual void insert (int idx, QObject * item) = 0;
+	/** Moves the item at index position from to index position to. 
+	 * This is the same as insert(to, takeAt(from)).
+	 * This function assumes that both from and to are at least 0 but less than size(). 
+	 * To avoid failure, test that both from and to are at least 0 and less than size().
+	 */
     virtual void move (int idx, int pos) = 0;
     virtual void remove (QObject * item) = 0;
+	/** Removes the item at index position i. 
+	 *i must be a valid index position in the list (i.e., 0 <= i < size()). */
     virtual void remove (int idx) = 0;
     virtual QObject * get (int idx) const = 0;
     virtual QObject * get (const QString & uid) const = 0;
     virtual QObject * getFirst (void) const = 0;
     virtual QObject * getLast (void) const = 0;
     virtual QVariantList toVarArray (void) const = 0;
+
+public:
+	Q_INVOKABLE void Append(QObject* dict)
+	{
+		append(dict);
+	}
 
 protected slots: // internal callback
     virtual void onItemPropertyChanged (void) = 0;
@@ -442,10 +483,33 @@ private: // data members
 };
 
 #define QQML_MODEL_OBJ_PROPERTY(type, name, Name) \
-    protected: Q_PROPERTY (QQmlObjectListModelBase * name READ get##Name CONSTANT) \
-    private: QQmlObjectListModel<type> * _##name; \
-    public: QQmlObjectListModel<type> * get##Name (void) const { return _##name; } \
+    protected: Q_PROPERTY (QQML_MODEL_NAMESPACE_NAME::QQmlObjectListModelBase * name READ Get##Name CONSTANT) \
+    private: QQML_MODEL_NAMESPACE_NAME::QQmlObjectListModel<type> * _##name = new QQML_MODEL_NAMESPACE_NAME::QQmlObjectListModel<type>(this, "display"); \
+    public: QQML_MODEL_NAMESPACE_NAME::QQmlObjectListModel<type> * Get##Name (void) const { return _##name; } \
     private:
+
+#define QQML_MODEL_OBJ_PROPERTY_QT(type, name, Name) \
+    protected: Q_PROPERTY (QQmlObjectListModelBase * name READ get##Name CONSTANT) \
+    private: QQML_MODEL_NAMESPACE_NAME::QQmlObjectListModel<type> * m_##name = new QQML_MODEL_NAMESPACE_NAME::QQmlObjectListModel<type>(this, "display"); \
+    public: QQML_MODEL_NAMESPACE_NAME::QQmlObjectListModel<type> * get##Name (void) const { return _##name; } \
+    private:
+
+/**
+ * \internal
+ */
+class _Test_TestObj : public QObject
+{
+	Q_OBJECT
+};
+
+/**
+ * \internal
+ */
+class _Test_QmlModelObj : public QObject
+{
+	Q_OBJECT
+	QQML_MODEL_OBJ_PROPERTY(_Test_TestObj, myObject, MyObject);
+};
 
 QQML_MODEL_NAMESPACE_END
 

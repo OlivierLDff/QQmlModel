@@ -136,7 +136,8 @@ SET( QQML_MODEL_SRCS
 	${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlObjectListModel.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlVariantListModel.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlVariantListModel.h
-	${CMAKE_CURRENT_SOURCE_DIR}/src/QtQmlTricksPlugin_SmartDataModels.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlModelShared.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlModelShared.cpp
 
 	${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlObjectListModel
 	${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlVariantListModel

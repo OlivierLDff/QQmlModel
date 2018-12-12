@@ -1,6 +1,10 @@
 #include <QString>
 
 #include "QQmlModelShared.h"
+#include "QQmlObjectListModel.h"
+#include "QQmlVariantListModel.h"
+
+QQML_MODEL_USING_NAMESPACE;
 
 uint32_t QQmlModelVersion::GetMajor()
 {
@@ -28,4 +32,17 @@ QString QQmlModelVersion::GetVersion()
 		QString::number(GetMinor()) + "." +
 		QString::number(GetTag()) + "." +
 		QString::number(GetTag(),16);
+}
+
+void Qqm::registerQtQmlTricksSmartDataModel(QQmlEngine* engine)
+{
+	Q_UNUSED (engine)
+
+	const char* uri = "QtQmlTricks.SmartDataModels"; // @uri QtQmlTricks.SmartDataModels
+	const int maj = 2;
+	const int min = 0;
+	const char* msg = "!!!";
+
+	qmlRegisterUncreatableType<QQmlObjectListModelBase>(uri, maj, min, "ObjectListModel", msg);
+	qmlRegisterUncreatableType<QQmlVariantListModel>(uri, maj, min, "VariantListModel", msg);
 }
