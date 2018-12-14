@@ -468,10 +468,11 @@ protected: // internal stuff
 	/**
 	 * Append an object to the list
 	 */
-	Q_INVOKABLE void Append(ItemType* dict)
-	{
-		append(dict);
-	}
+	Q_INVOKABLE void Append(ItemType* dict) { append(dict); }
+	Q_INVOKABLE void Remove(ItemType* dict) { remove(dict); }
+
+	Q_INVOKABLE void Remove(const int row) { remove(row); }
+
 	Q_INVOKABLE void ClearAndDeleteLater()
 	{
 		beginResetModel();
@@ -482,6 +483,27 @@ protected: // internal stuff
 		m_items.clear();
 		endResetModel();
 	}
+
+	Q_INVOKABLE void Move(const int row, const int newRow) { move(row, newRow); }
+
+	/** Move row to row-1 */
+	Q_INVOKABLE void MoveUp(const int row)
+    {
+		if (row > 0 && row < count())
+			move(row, row - 1);
+    }
+
+	/** Move row to row+1 */
+	Q_INVOKABLE void MoveDown(const int row)
+    {
+		if (count() && // There is a least one entry
+			row >= 0 && // We can be from the first
+			row < (count() - 1) // To the last one minus 1
+			)
+		{
+			return MoveUp(row + 1);
+		}
+    }
 
 private: // data members
     int                        m_count;
@@ -508,15 +530,6 @@ private: // data members
     protected: Q_PROPERTY (type * name READ Get##Name CONSTANT) \
     private: type * _##name = new type(this); \
     public: type * Get##Name (void) const { return _##name; } \
-    private:
-
-#define QQML_MODEL_OBJ_PROPERTY_QT(type, name, Name) \
-	QQML_MODEL_OBJ_PROPERTY_SUB_QT(type, name, Name, QQmlObjectListModel)
-
-#define QQML_MODEL_OBJ_PROPERTY_SUB_QT(type, name, Name, sub) \
-    protected: Q_PROPERTY (QQML_MODEL_NAMESPACE_NAME::QQmlObjectListModelBase * name READ get##Name CONSTANT) \
-    private: QQML_MODEL_NAMESPACE_NAME::sub<type> * m_##name = new QQML_MODEL_NAMESPACE_NAME::sub<type>(this, "display"); \
-    public: QQML_MODEL_NAMESPACE_NAME::sub<type> * get##Name (void) const { return _##name; } \
     private:
 
 /**
