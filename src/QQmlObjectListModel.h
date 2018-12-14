@@ -507,7 +507,7 @@ public:
 
 	Q_INVOKABLE ItemType* At(const int row)
     {
-		return row >= 0 && row < m_list.size() ? m_list.at(row) : nullptr;
+		return row >= 0 && row < m_items.size() ? m_items.at(row) : nullptr;
     }
 
 private: // data members
