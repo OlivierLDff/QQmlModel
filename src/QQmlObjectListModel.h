@@ -464,7 +464,7 @@ protected: // internal stuff
         }
     }
 
-
+public:
 	/**
 	 * Append an object to the list
 	 */
@@ -503,6 +503,11 @@ protected: // internal stuff
 		{
 			return MoveUp(row + 1);
 		}
+    }
+
+	Q_INVOKABLE ItemType* At(const int row)
+    {
+		return row >= 0 && row < m_list.size() ? m_list.at(row) : nullptr;
     }
 
 private: // data members
