@@ -107,12 +107,6 @@ public slots: // virtual methods API for QML
     virtual QObject * getLast (void) const = 0;
     virtual QVariantList toVarArray (void) const = 0;
 
-public:
-	Q_INVOKABLE void Append(QObject* dict)
-	{
-		append(dict);
-	}
-
 protected slots: // internal callback
     virtual void onItemPropertyChanged (void) = 0;
 
@@ -470,6 +464,25 @@ protected: // internal stuff
         }
     }
 
+
+	/**
+	 * Append an object to the list
+	 */
+	Q_INVOKABLE void Append(ItemType* dict)
+	{
+		append(dict);
+	}
+	Q_INVOKABLE void ClearAndDeleteLater()
+	{
+		beginResetModel();
+		for(auto it: m_items) if(it)
+		{
+			it->deleteLater();
+		}
+		m_items.clear();
+		endResetModel();
+	}
+
 private: // data members
     int                        m_count;
     QByteArray                 m_uidRoleName;
@@ -483,15 +496,27 @@ private: // data members
 };
 
 #define QQML_MODEL_OBJ_PROPERTY(type, name, Name) \
+	QQML_MODEL_OBJ_PROPERTY_SUB(QQML_MODEL_NAMESPACE_NAME::QQmlObjectListModel<type>, name, Name)
+
+#define QQML_MODEL_OBJ_PROPERTY_SUB(type, name, Name) \
     protected: Q_PROPERTY (QQML_MODEL_NAMESPACE_NAME::QQmlObjectListModelBase * name READ Get##Name CONSTANT) \
-    private: QQML_MODEL_NAMESPACE_NAME::QQmlObjectListModel<type> * _##name = new QQML_MODEL_NAMESPACE_NAME::QQmlObjectListModel<type>(this, "display"); \
-    public: QQML_MODEL_NAMESPACE_NAME::QQmlObjectListModel<type> * Get##Name (void) const { return _##name; } \
+    private: type * _##name = new type(this); \
+    public: type * Get##Name (void) const { return _##name; } \
+    private:
+
+#define QQML_MODEL_OBJ_PROPERTY_SUB_NO_T(type, name, Name) \
+    protected: Q_PROPERTY (type * name READ Get##Name CONSTANT) \
+    private: type * _##name = new type(this); \
+    public: type * Get##Name (void) const { return _##name; } \
     private:
 
 #define QQML_MODEL_OBJ_PROPERTY_QT(type, name, Name) \
-    protected: Q_PROPERTY (QQmlObjectListModelBase * name READ get##Name CONSTANT) \
-    private: QQML_MODEL_NAMESPACE_NAME::QQmlObjectListModel<type> * m_##name = new QQML_MODEL_NAMESPACE_NAME::QQmlObjectListModel<type>(this, "display"); \
-    public: QQML_MODEL_NAMESPACE_NAME::QQmlObjectListModel<type> * get##Name (void) const { return _##name; } \
+	QQML_MODEL_OBJ_PROPERTY_SUB_QT(type, name, Name, QQmlObjectListModel)
+
+#define QQML_MODEL_OBJ_PROPERTY_SUB_QT(type, name, Name, sub) \
+    protected: Q_PROPERTY (QQML_MODEL_NAMESPACE_NAME::QQmlObjectListModelBase * name READ get##Name CONSTANT) \
+    private: QQML_MODEL_NAMESPACE_NAME::sub<type> * m_##name = new QQML_MODEL_NAMESPACE_NAME::sub<type>(this, "display"); \
+    public: QQML_MODEL_NAMESPACE_NAME::sub<type> * get##Name (void) const { return _##name; } \
     private:
 
 /**
