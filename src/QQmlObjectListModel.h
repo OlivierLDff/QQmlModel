@@ -106,6 +106,17 @@ public slots: // virtual methods API for QML
     virtual QObject * getFirst (void) const = 0;
     virtual QObject * getLast (void) const = 0;
     virtual QVariantList toVarArray (void) const = 0;
+public:
+	Q_INVOKABLE virtual void Append() = 0;
+	Q_INVOKABLE virtual void Remove(const int row) = 0;
+	Q_INVOKABLE virtual void Move(const int src, const int dest) = 0;
+	Q_INVOKABLE virtual void Insert(const int src) = 0;
+
+	Q_INVOKABLE virtual void MoveUp(const int row) = 0;
+
+	/** Move row to row+1 */
+	Q_INVOKABLE virtual void MoveDown(const int row) = 0;
+	Q_INVOKABLE virtual QObject * At(const int row) = 0;
 
 protected slots: // internal callback
     virtual void onItemPropertyChanged (void) = 0;
@@ -300,15 +311,15 @@ public: // C++ API
         }
     }
     void move (int idx, int pos) Q_DECL_FINAL {
-        if (idx != pos) {
+        if (idx != pos && idx >=0 && pos>=0 && idx < m_items.size() && pos < m_items.size()) {
             // FIXME : use begin/end MoveRows when supported by Repeater, since then use remove/insert pair
-            //beginMoveRows (noParent (), idx, idx, noParent (), (idx < pos ? pos +1 : pos));
-            beginRemoveRows (noParent (), idx, idx);
-            beginInsertRows (noParent (), pos, pos);
+            beginMoveRows (noParent (), idx, idx, noParent (), (idx < pos ? pos +1 : pos));
+			//beginRemoveRows (noParent (), idx, idx);
+            //beginInsertRows (noParent (), pos, pos);
             m_items.move (idx, pos);
-            endRemoveRows ();
-            endInsertRows ();
-            //endMoveRows ();
+            //endRemoveRows ();
+            //endInsertRows ();
+            endMoveRows ();
         }
     }
     void remove (ItemType * item) {
@@ -465,13 +476,20 @@ protected: // internal stuff
     }
 
 public:
+	Q_INVOKABLE virtual void Append() override { append(new ItemType(this)); }
 	/**
 	 * Append an object to the list
 	 */
 	Q_INVOKABLE void Append(ItemType* dict) { append(dict); }
 	Q_INVOKABLE void Remove(ItemType* dict) { remove(dict); }
 
-	Q_INVOKABLE void Remove(const int row) { remove(row); }
+	Q_INVOKABLE virtual void Remove(const int row) override
+	{
+		ItemType* it = m_items.takeAt(row);
+		remove(row);
+		if (it)
+			it->deleteLater();
+	}
 
 	Q_INVOKABLE void ClearAndDeleteLater()
 	{
@@ -481,20 +499,22 @@ public:
 			it->deleteLater();
 		}
 		m_items.clear();
+		updateCounter();
 		endResetModel();
 	}
+	Q_INVOKABLE virtual void Insert(const int src) override { insert(src, new ItemType(this)); }
 
-	Q_INVOKABLE void Move(const int row, const int newRow) { move(row, newRow); }
+	Q_INVOKABLE virtual void Move(const int row, const int newRow) override { move(row, newRow); }
 
 	/** Move row to row-1 */
-	Q_INVOKABLE void MoveUp(const int row)
+	Q_INVOKABLE void MoveUp(const int row) override
     {
 		if (row > 0 && row < count())
 			move(row, row - 1);
     }
 
 	/** Move row to row+1 */
-	Q_INVOKABLE void MoveDown(const int row)
+	Q_INVOKABLE void MoveDown(const int row) override
     {
 		if (count() && // There is a least one entry
 			row >= 0 && // We can be from the first
@@ -505,7 +525,7 @@ public:
 		}
     }
 
-	Q_INVOKABLE ItemType* At(const int row)
+	Q_INVOKABLE QObject* At(const int row) override
     {
 		return row >= 0 && row < m_items.size() ? m_items.at(row) : nullptr;
     }
@@ -543,6 +563,8 @@ private: // data members
 class _Test_TestObj : public QObject
 {
 	Q_OBJECT
+public:
+	_Test_TestObj(QObject* parent = nullptr) : QObject(parent) {}
 };
 
 /**
