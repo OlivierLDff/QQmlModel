@@ -111,11 +111,9 @@ public:
 	Q_INVOKABLE virtual void Remove(const int row) = 0;
 	Q_INVOKABLE virtual void Move(const int src, const int dest) = 0;
 	Q_INVOKABLE virtual void Insert(const int src) = 0;
-
 	Q_INVOKABLE virtual void MoveUp(const int row) = 0;
-
-	/** Move row to row+1 */
 	Q_INVOKABLE virtual void MoveDown(const int row) = 0;
+	Q_INVOKABLE virtual void ClearAndDeleteLater() = 0;
 	Q_INVOKABLE virtual QObject * At(const int row) = 0;
 
 protected slots: // internal callback
@@ -491,7 +489,7 @@ public:
 			it->deleteLater();
 	}
 
-	Q_INVOKABLE void ClearAndDeleteLater()
+	Q_INVOKABLE virtual void ClearAndDeleteLater() override
 	{
 		beginResetModel();
 		for(auto it: m_items) if(it)
