@@ -113,7 +113,7 @@ public:
 	Q_INVOKABLE virtual void Insert(const int src) = 0;
 	Q_INVOKABLE virtual void MoveUp(const int row) = 0;
 	Q_INVOKABLE virtual void MoveDown(const int row) = 0;
-	Q_INVOKABLE virtual void ClearAndDeleteLater() = 0;
+	Q_INVOKABLE virtual void Clear() = 0;
 	Q_INVOKABLE virtual QObject * At(const int row) = 0;
 
 protected slots: // internal callback
@@ -121,9 +121,17 @@ protected slots: // internal callback
 
 signals: // notifier
     void countChanged (void);
+signals:
+	void itemAboutToBeInserted(QObject* item, int row);
+	void itemInserted(QObject* item, int row);
+	void itemAboutToBeMoved(QObject* item, int src, int dest);
+	void itemMoved(QObject* item, int src, int dest);
+	void itemAboutToBeRemoved(QObject* item, int row);
+	void itemRemoved(QObject* item, int row);
 };
 
-template<class ItemType> class QQmlObjectListModel : public QQmlObjectListModelBase {
+template<class ItemType> class QQmlObjectListModel : public QQmlObjectListModelBase 
+{
 public:
     explicit QQmlObjectListModel (QObject *          parent      = Q_NULLPTR,
                                   const QByteArray & displayRole = QByteArray (),
@@ -230,46 +238,61 @@ public: // C++ API
     }
     void clear (void) Q_DECL_FINAL {
         if (!m_items.isEmpty ()) {
+			QList<ItemType*> tempList;
+			for (int i = 0; i < m_items.count(); ++i)
+				itemAboutToBeRemoved(m_items.at(i), i);
             beginRemoveRows (noParent (), 0, m_items.count () -1);
             FOREACH_PTR_IN_QLIST (ItemType, item, m_items) {
                 dereferenceItem (item);
+				tempList.append(item);
             }
             m_items.clear ();
             updateCounter ();
             endRemoveRows ();
+			for (int i = 0; i < tempList.count(); ++i)
+				itemRemoved(tempList.at(i), i);
         }
     }
     void append (ItemType * item) {
         if (item != Q_NULLPTR) {
             const int pos = m_items.count ();
+			itemAboutToBeInserted(item, pos);
             beginInsertRows (noParent (), pos, pos);
             m_items.append (item);
             referenceItem (item);
             updateCounter ();
             endInsertRows ();
+			itemInserted(item, pos);
         }
     }
     void prepend (ItemType * item) {
         if (item != Q_NULLPTR) {
+			itemAboutToBeInserted(item, 0);
             beginInsertRows (noParent (), 0, 0);
             m_items.prepend (item);
             referenceItem (item);
             updateCounter ();
             endInsertRows ();
+			itemInserted(item, 0);
         }
     }
     void insert (int idx, ItemType * item) {
         if (item != Q_NULLPTR) {
+			itemAboutToBeInserted(item, idx);
             beginInsertRows (noParent (), idx, idx);
             m_items.insert (idx, item);
             referenceItem (item);
             updateCounter ();
             endInsertRows ();
+			itemInserted(item, idx);
         }
     }
     void append (const QList<ItemType *> & itemList) {
         if (!itemList.isEmpty ()) {
             const int pos = m_items.count ();
+			for(int i = 0; i < itemList.count(); ++i)
+				itemAboutToBeInserted(itemList.at(i), i + pos);
+
             beginInsertRows (noParent (), pos, pos + itemList.count () -1);
             m_items.reserve (m_items.count () + itemList.count ());
             m_items.append (itemList);
@@ -278,10 +301,14 @@ public: // C++ API
             }
             updateCounter ();
             endInsertRows ();
+			for (int i = 0; i < itemList.count(); ++i)
+				itemInserted(itemList.at(i), i + pos);
         }
     }
     void prepend (const QList<ItemType *> & itemList) {
         if (!itemList.isEmpty ()) {
+			for (int i = 0; i < itemList.count(); ++i)
+				itemAboutToBeInserted(itemList.at(i), i);
             beginInsertRows (noParent (), 0, itemList.count () -1);
             m_items.reserve (m_items.count () + itemList.count ());
             int offset = 0;
@@ -292,10 +319,14 @@ public: // C++ API
             }
             updateCounter ();
             endInsertRows ();
+			for (int i = 0; i < itemList.count(); ++i)
+				itemInserted(itemList.at(i), i);
         }
     }
     void insert (int idx, const QList<ItemType *> & itemList) {
         if (!itemList.isEmpty ()) {
+			for (int i = 0; i < itemList.count(); ++i)
+				itemAboutToBeInserted(itemList.at(i), i + idx);
             beginInsertRows (noParent (), idx, idx + itemList.count () -1);
             m_items.reserve (m_items.count () + itemList.count ());
             int offset = 0;
@@ -306,18 +337,17 @@ public: // C++ API
             }
             updateCounter ();
             endInsertRows ();
+			for (int i = 0; i < itemList.count(); ++i)
+				itemInserted(itemList.at(i), i + idx);
         }
     }
     void move (int idx, int pos) Q_DECL_FINAL {
         if (idx != pos && idx >=0 && pos>=0 && idx < m_items.size() && pos < m_items.size()) {
-            // FIXME : use begin/end MoveRows when supported by Repeater, since then use remove/insert pair
+			itemAboutToBeMoved(m_items.at(idx), idx, pos);
             beginMoveRows (noParent (), idx, idx, noParent (), (idx < pos ? pos +1 : pos));
-			//beginRemoveRows (noParent (), idx, idx);
-            //beginInsertRows (noParent (), pos, pos);
             m_items.move (idx, pos);
-            //endRemoveRows ();
-            //endInsertRows ();
             endMoveRows ();
+			itemMoved(m_items.at(idx), idx, pos);
         }
     }
     void remove (ItemType * item) {
@@ -328,11 +358,13 @@ public: // C++ API
     }
     void remove (int idx) Q_DECL_FINAL {
         if (idx >= 0 && idx < m_items.size ()) {
+			itemAboutToBeRemoved(m_items.at(idx), idx);
             beginRemoveRows (noParent (), idx, idx);
             ItemType * item = m_items.takeAt (idx);
             dereferenceItem (item);
             updateCounter ();
             endRemoveRows ();
+			itemRemoved(item, idx);
         }
     }
     ItemType * first (void) const {
@@ -473,41 +505,38 @@ protected: // internal stuff
         }
     }
 
+private:
+	void itemAboutToBeInserted(ItemType* item, int row) { onItemAboutToBeInserted(item, row); _onItemAboutToBeInserted(item, row); }
+	void itemInserted(ItemType* item, int row) { onItemInserted(item, row); _onItemInserted(item, row);	}
+	void itemAboutToBeMoved(ItemType* item, int src, int dest) { onItemAboutToBeMoved(item, src, dest); _onItemAboutToBeMoved(item, src, dest);	}
+	void itemMoved(ItemType* item, int src, int dest) { onItemMoved(item, src, dest); _onItemMoved(item, src, dest); }
+	void itemAboutToBeRemoved(ItemType* item, int row) { onItemAboutToBeRemoved(item, row); _onItemAboutToBeRemoved(item, row); }
+	void itemRemoved(ItemType* item, int row) { onItemRemoved(item, row); _onItemRemoved(item, row); }
+
+protected:
+	virtual void onItemAboutToBeInserted(ItemType* item, int row) { }
+	virtual void onItemInserted(ItemType* item, int row) { }
+	virtual void onItemAboutToBeMoved(ItemType* item, int src, int dest) { }
+	virtual void onItemMoved(ItemType* item, int src, int dest) { }
+	virtual void onItemAboutToBeRemoved(ItemType* item, int row) { }
+	virtual void onItemRemoved(ItemType* item, int row) { }
+
+private:
+	void _onItemAboutToBeInserted(ItemType* item, int row) { emit QQmlObjectListModelBase::itemAboutToBeInserted(item, row); }
+	void _onItemInserted(ItemType* item, int row) { emit QQmlObjectListModelBase::itemInserted(item, row); }
+	void _onItemAboutToBeMoved(ItemType* item, int src, int dest) { emit QQmlObjectListModelBase::itemAboutToBeMoved(item, src, dest); }
+	void _onItemMoved(ItemType* item, int src, int dest) { emit QQmlObjectListModelBase::itemMoved(item, src, dest); }
+	void _onItemAboutToBeRemoved(ItemType* item, int row) { emit QQmlObjectListModelBase::itemAboutToBeRemoved(item, row); }
+	void _onItemRemoved(ItemType* item, int row) { emit QQmlObjectListModelBase::itemRemoved(item, row); }
+
 public:
-	Q_INVOKABLE virtual void Append() override
-	{
-		append(new ItemType(this));
-	}
-	/**
-	 * Append an object to the list
-	 */
+	Q_INVOKABLE virtual void Append() override { append(new ItemType(this)); }
 	Q_INVOKABLE void Append(ItemType* dict) { append(dict); }
 	Q_INVOKABLE void Remove(ItemType* dict) { remove(dict); }
+	Q_INVOKABLE virtual void Remove(const int row) override	{ remove(row); }
 
-	Q_INVOKABLE virtual void Remove(const int row) override
-	{
-		if(row >= 0 && row < m_items.size())
-		{
-			ItemType* it = m_items.at(row);
-			remove(row);
-			if (it)
-				it->deleteLater();			
-		}
-	}
-
-	Q_INVOKABLE virtual void ClearAndDeleteLater() override
-	{
-		beginResetModel();
-		for(auto it: m_items) if(it)
-		{
-			it->deleteLater();
-		}
-		m_items.clear();
-		updateCounter();
-		endResetModel();
-	}
+	Q_INVOKABLE virtual void Clear() override {	clear(); }
 	Q_INVOKABLE virtual void Insert(const int src) override { insert(src, new ItemType(this)); }
-
 	Q_INVOKABLE virtual void Move(const int row, const int newRow) override { move(row, newRow); }
 
 	/** Move row to row-1 */
