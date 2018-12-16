@@ -486,10 +486,13 @@ public:
 
 	Q_INVOKABLE virtual void Remove(const int row) override
 	{
-		ItemType* it = m_items.at(row);
-		remove(row);
-		if (it)
-			it->deleteLater();
+		if(row >= 0 && row < m_items.size())
+		{
+			ItemType* it = m_items.at(row);
+			remove(row);
+			if (it)
+				it->deleteLater();			
+		}
 	}
 
 	Q_INVOKABLE virtual void ClearAndDeleteLater() override
