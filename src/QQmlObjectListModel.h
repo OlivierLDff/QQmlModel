@@ -474,7 +474,10 @@ protected: // internal stuff
     }
 
 public:
-	Q_INVOKABLE virtual void Append() override { append(new ItemType(this)); }
+	Q_INVOKABLE virtual void Append() override
+	{
+		append(new ItemType(this));
+	}
 	/**
 	 * Append an object to the list
 	 */
@@ -483,7 +486,7 @@ public:
 
 	Q_INVOKABLE virtual void Remove(const int row) override
 	{
-		ItemType* it = m_items.takeAt(row);
+		ItemType* it = m_items.at(row);
 		remove(row);
 		if (it)
 			it->deleteLater();
