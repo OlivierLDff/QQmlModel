@@ -143,6 +143,7 @@ template<class ItemType> class QQmlObjectListModel : public QQmlObjectListModelB
 {
 public:
     explicit QQmlObjectListModel (QObject *          parent      = Q_NULLPTR,
+								  const QList<QByteArray> & exposedRoles = QList<QByteArray>(),
                                   const QByteArray & displayRole = QByteArray (),
                                   const QByteArray & uidRole     = QByteArray ())
         : QQmlObjectListModelBase (parent)
@@ -151,6 +152,7 @@ public:
         , m_dispRoleName (displayRole)
         , m_metaObj (ItemType::staticMetaObject)
     {
+		// Keep a track of black list rolename that are not compatible with Qml, they should never be used
         static QSet<QByteArray> roleNamesBlacklist;
         if (roleNamesBlacklist.isEmpty ()) {
             roleNamesBlacklist << QByteArrayLiteral ("id")
@@ -159,25 +161,43 @@ public:
                                << QByteArrayLiteral ("model")
                                << QByteArrayLiteral ("modelData");
         }
+
+		// Set handler that handle every property changed
         static const char * HANDLER = "onItemPropertyChanged()";
         m_handler = metaObject ()->method (metaObject ()->indexOfMethod (HANDLER));
+
+		// Force a display role the the role map
         if (!displayRole.isEmpty ()) {
             m_roles.insert (Qt::DisplayRole, QByteArrayLiteral ("display"));
         }
+		// Return a pointer to the qtObject as the base Role. This point is essential
         m_roles.insert (baseRole (), QByteArrayLiteral ("qtObject"));
+
+		// Number of attribute declare with the Q_PROPERTY flags
         const int len = m_metaObj.propertyCount ();
+		// For every property in the ItemType
         for (int propertyIdx = 0, role = (baseRole () +1); propertyIdx < len; propertyIdx++, role++) {
             QMetaProperty metaProp = m_metaObj.property (propertyIdx);
             const QByteArray propName = QByteArray (metaProp.name ());
-            if (!roleNamesBlacklist.contains (propName)) {
+			// Only expose the property as a role if:
+			// - It isn't blacklisted (id, index, class, model, modelData)
+			// - When exposedRoles is empty we expose every property
+			// - When exposedRoles isn't empty we only expose the property asked by the user
+            if (!roleNamesBlacklist.contains (propName) &&
+				(exposedRoles.size() == 0 || exposedRoles.contains(propName)))
+			{
                 m_roles.insert (role, propName);
-                if (metaProp.hasNotifySignal ()) {
+				// If there is a notify signal associated with the Q_PROPERTY we keep a track of it for fast lookup
+                if (metaProp.hasNotifySignal ())
+				{
                     m_signalIdxToRole.insert (metaProp.notifySignalIndex (), role);
                 }
             }
-            else {
+            else if(roleNamesBlacklist.contains(propName))
+			{
                 static const QByteArray CLASS_NAME = (QByteArrayLiteral ("QQmlObjectListModel<") % m_metaObj.className () % '>');
-                qWarning () << "Can't have" << propName << "as a role name in" << qPrintable (CLASS_NAME);
+                qWarning () << "Can't have" << propName << "as a role name in" << qPrintable (CLASS_NAME) << ", because it's a blacklisted keywork in QML!. "
+            	"Please don't use any of the following words when declaring your Q_PROPERTY: (id, index, class, model, modelData)";
             }
         }
     }
