@@ -122,13 +122,20 @@ protected slots: // internal callback
     virtual void onItemPropertyChanged (void) = 0;
 
 signals: // notifier
+	/** Emitted when count changed (ie removed or inserted item) */
     void countChanged (void);
 signals:
+	/** Emitted when an item is about to be inserted */
 	void itemAboutToBeInserted(QObject* item, int row);
+	/** Emitted after an item is in the list */
 	void itemInserted(QObject* item, int row);
+	/** Emitted when an item is about to be moved */
 	void itemAboutToBeMoved(QObject* item, int src, int dest);
+	/** Emitted after an item have been moved */
 	void itemMoved(QObject* item, int src, int dest);
+	/** Emitted when an item is about to be removed */
 	void itemAboutToBeRemoved(QObject* item, int row);
+	/** Emitted when an item is about to be removed */
 	void itemRemoved(QObject* item, int row);
 };
 
@@ -443,7 +450,7 @@ protected: // internal stuff
                 item->setParent (this);
             }
             for (QHash<int, int>::const_iterator it = m_signalIdxToRole.constBegin (); it != m_signalIdxToRole.constEnd (); ++it) {
-                connect (item, item->metaObject ()->method (it.key ()), this, m_handler, Qt::UniqueConnection);
+				connect(item, item->metaObject()->method(it.key()), this, m_handler, Qt::UniqueConnection);
             }
             if (!m_uidRoleName.isEmpty ()) {
                 const QString key = m_indexByUid.key (item, emptyStr ());
@@ -532,26 +539,26 @@ private:
 	void _onItemRemoved(ItemType* item, int row) { emit QQmlObjectListModelBase::itemRemoved(item, row); }
 
 public:
-	Q_INVOKABLE virtual void Append() override { append(new ItemType(this)); }
+	Q_INVOKABLE void Append() override { append(new ItemType(this)); }
 	Q_INVOKABLE void Append(ItemType* dict) { append(dict); }
 	Q_INVOKABLE void Remove(ItemType* dict) { remove(dict); }
-	Q_INVOKABLE virtual void Remove(const int row) override	{ remove(row); }
+	Q_INVOKABLE void Remove(const int row) override	final { remove(row); }
 
-	Q_INVOKABLE virtual void Clear() override {	clear(); }
-	Q_INVOKABLE virtual void Insert(const int src) override { insert(src, new ItemType(this)); }
-	Q_INVOKABLE virtual void Move(const int row, const int newRow) override { move(row, newRow); }
-	Q_INVOKABLE virtual int Count() const final { return count(); }
-	Q_INVOKABLE virtual int Size() const final { return size(); }
+	Q_INVOKABLE void Clear() override final { clear(); }
+	Q_INVOKABLE void Insert(const int src) override final { insert(src, new ItemType(this)); }
+	Q_INVOKABLE void Move(const int row, const int newRow) override { move(row, newRow); }
+	Q_INVOKABLE int Count() const final { return count(); }
+	Q_INVOKABLE int Size() const final { return size(); }
 
 	/** Move row to row-1 */
-	Q_INVOKABLE void MoveUp(const int row) override
+	Q_INVOKABLE void MoveUp(const int row) override final
     {
 		if (row > 0 && row < count())
 			move(row, row - 1);
     }
 
 	/** Move row to row+1 */
-	Q_INVOKABLE void MoveDown(const int row) override
+	Q_INVOKABLE void MoveDown(const int row) override final
     {
 		if (count() && // There is a least one entry
 			row >= 0 && // We can be from the first
@@ -562,10 +569,10 @@ public:
 		}
     }
 
-	Q_INVOKABLE QObject* At(const int row) override
-    {
+	Q_INVOKABLE QObject* At(const int row) override final
+	{
 		return row >= 0 && row < m_items.size() ? m_items.at(row) : nullptr;
-    }
+	}
 
 private: // data members
     int                        m_count;
