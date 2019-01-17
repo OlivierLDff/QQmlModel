@@ -8,7 +8,7 @@
 
 #include "QQmlModelShared.h"
 
-QQML_MODEL_NAMESPACE_START
+QQMLMODEL_NAMESPACE_START
 
 class QQmlVariantListModel : public QAbstractListModel {
     Q_OBJECT
@@ -52,6 +52,6 @@ private:
     QHash<int, QByteArray> m_roles;
 };
 
-QQML_MODEL_NAMESPACE_END
+QQMLMODEL_NAMESPACE_END
 
 #endif // QQMLVARIANTLISTMODEL_H

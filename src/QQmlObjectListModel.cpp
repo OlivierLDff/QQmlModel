@@ -1,7 +1,7 @@
 
 #include "QQmlObjectListModel.h"
 
-QQML_MODEL_USING_NAMESPACE;
+QQMLMODEL_USING_NAMESPACE;
 
 /*!
     \class QQmlObjectListModel

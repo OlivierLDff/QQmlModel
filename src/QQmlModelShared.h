@@ -5,35 +5,35 @@
 #include <QtQml>
 
 #ifdef WIN32
-	#ifdef QQML_MODEL_SHARED	// Shared build
-		#define QQML_MODEL_API_ __declspec(dllexport)
-	#elif QQML_MODEL_STATIC 	// No decoration when building staticlly
-		#define QQML_MODEL_API_
+	#ifdef QQMLMODEL_SHARED	// Shared build
+		#define QQMLMODEL_API_ __declspec(dllexport)
+	#elif QQMLMODEL_STATIC 	// No decoration when building staticlly
+		#define QQMLMODEL_API_
 	#else 				// Link to lib 
-		#define QQML_MODEL_API_ __declspec(dllimport)
+		#define QQMLMODEL_API_ __declspec(dllimport)
 	#endif
 #else
-	#define QQML_MODEL_API_
+	#define QQMLMODEL_API_
 #endif
 
-#ifdef QQML_MODEL_USE_NAMESPACE
-#ifndef QQML_MODEL_NAMESPACE_NAME
-#define QQML_MODEL_NAMESPACE_NAME Qqm
+#ifdef QQMLMODEL_USE_NAMESPACE
+#ifndef QQMLMODEL_NAMESPACE_NAME
+#define QQMLMODEL_NAMESPACE_NAME Qqm
 #endif
-#define QQML_MODEL_NAMESPACE_START namespace QQML_MODEL_NAMESPACE_NAME {
-#define QQML_MODEL_NAMESPACE_END }
-#define QQML_MODEL_USING_NAMESPACE using namespace QQML_MODEL_NAMESPACE_NAME;
+#define QQMLMODEL_NAMESPACE_START namespace QQMLMODEL_NAMESPACE_NAME {
+#define QQMLMODEL_NAMESPACE_END }
+#define QQMLMODEL_USING_NAMESPACE using namespace QQMLMODEL_NAMESPACE_NAME;
 #else
-#undef QQML_MODEL_NAMESPACE_NAME
-#define QQML_MODEL_NAMESPACE_NAME
-#define QQML_MODEL_NAMESPACE_START
-#define QQML_MODEL_NAMESPACE_END
-#define QQML_MODEL_USING_NAMESPACE
+#undef QQMLMODEL_NAMESPACE_NAME
+#define QQMLMODEL_NAMESPACE_NAME
+#define QQMLMODEL_NAMESPACE_START
+#define QQMLMODEL_NAMESPACE_END
+#define QQMLMODEL_USING_NAMESPACE
 #endif
 
-QQML_MODEL_NAMESPACE_START
+QQMLMODEL_NAMESPACE_START
 
-class QQML_MODEL_API_ QQmlModelVersion
+class QQMLMODEL_API_ QQmlModelVersion
 {
 public:
 	/** Library Major Version */
@@ -50,6 +50,6 @@ public:
 
 	static void registerQtQmlTricksSmartDataModel(QQmlEngine* engine);
 
-QQML_MODEL_NAMESPACE_END
+QQMLMODEL_NAMESPACE_END
 
 #endif

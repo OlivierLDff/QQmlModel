@@ -18,7 +18,7 @@
 
 #include "QQmlModelShared.h"
 
-QQML_MODEL_NAMESPACE_START
+QQMLMODEL_NAMESPACE_START
 
 template<typename T> QList<T> qListFromVariant (const QVariantList & list) {
     QList<T> ret;
@@ -606,16 +606,16 @@ private: // data members
     QHash<QString, ItemType *> m_indexByUid;
 };
 
-#define QQML_MODEL_OBJ_PROPERTY(type, name, Name) \
-	QQML_MODEL_OBJ_PROPERTY_SUB(QQML_MODEL_NAMESPACE_NAME::QQmlObjectListModel<type>, name, Name)
+#define QQMLMODEL_OBJ_PROPERTY(type, name, Name) \
+	QQMLMODEL_OBJ_PROPERTY_SUB(QQMLMODEL_NAMESPACE_NAME::QQmlObjectListModel<type>, name, Name)
 
-#define QQML_MODEL_OBJ_PROPERTY_SUB(type, name, Name) \
-    protected: Q_PROPERTY (QQML_MODEL_NAMESPACE_NAME::QQmlObjectListModelBase * name READ Get##Name CONSTANT) \
+#define QQMLMODEL_OBJ_PROPERTY_SUB(type, name, Name) \
+    protected: Q_PROPERTY (QQMLMODEL_NAMESPACE_NAME::QQmlObjectListModelBase * name READ Get##Name CONSTANT) \
     private: type * _##name = new type(this); \
     public: type * Get##Name (void) const { return _##name; } \
     private:
 
-#define QQML_MODEL_OBJ_PROPERTY_SUB_NO_T(type, name, Name) \
+#define QQMLMODEL_OBJ_PROPERTY_SUB_NO_T(type, name, Name) \
     protected: Q_PROPERTY (type * name READ Get##Name CONSTANT) \
     private: type * _##name = new type(this); \
     public: type * Get##Name (void) const { return _##name; } \
@@ -637,9 +637,9 @@ public:
 class _Test_QmlModelObj : public QObject
 {
 	Q_OBJECT
-	QQML_MODEL_OBJ_PROPERTY(_Test_TestObj, myObject, MyObject);
+	QQMLMODEL_OBJ_PROPERTY(_Test_TestObj, myObject, MyObject);
 };
 
-QQML_MODEL_NAMESPACE_END
+QQMLMODEL_NAMESPACE_END
 
 #endif // QQMLOBJECTLISTMODEL_H

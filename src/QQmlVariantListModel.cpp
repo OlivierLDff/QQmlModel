@@ -1,7 +1,7 @@
 
 #include "QQmlVariantListModel.h"
 
-QQML_MODEL_USING_NAMESPACE;
+QQMLMODEL_USING_NAMESPACE;
 
 #define NO_PARENT QModelIndex ()
 #define BASE_ROLE Qt::UserRole

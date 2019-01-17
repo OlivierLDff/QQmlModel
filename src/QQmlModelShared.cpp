@@ -4,26 +4,26 @@
 #include "QQmlObjectListModel.h"
 #include "QQmlVariantListModel.h"
 
-QQML_MODEL_USING_NAMESPACE;
+QQMLMODEL_USING_NAMESPACE;
 
 uint32_t QQmlModelVersion::GetMajor()
 {
-	return QQML_MODEL_VERSION_MAJOR;
+	return QQMLMODEL_VERSION_MAJOR;
 }
 
 uint32_t QQmlModelVersion::GetMinor()
 {
-	return QQML_MODEL_VERSION_MINOR;
+	return QQMLMODEL_VERSION_MINOR;
 }
 
 uint32_t QQmlModelVersion::GetPatch()
 {
-	return QQML_MODEL_VERSION_PATCH;
+	return QQMLMODEL_VERSION_PATCH;
 }
 
 uint32_t QQmlModelVersion::GetTag()
 {
-	return QQML_MODEL_VERSION_TAG_HEX;
+	return QQMLMODEL_VERSION_TAG_HEX;
 }
 
 QString QQmlModelVersion::GetVersion()
