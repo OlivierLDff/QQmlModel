@@ -97,6 +97,8 @@ public slots: // virtual methods API for QML
 	 * To avoid failure, test that both from and to are at least 0 and less than size().
 	 */
 	Q_INVOKABLE virtual void move (int idx, int pos) = 0;
+	virtual void moveDown(const int row) = 0;
+	virtual void moveUp(const int row) = 0;
 	Q_INVOKABLE virtual void remove (QObject * item) = 0;
 	/** Removes the item at index position i. 
 	 *i must be a valid index position in the list (i.e., 0 <= i < size()). */
@@ -106,17 +108,6 @@ public slots: // virtual methods API for QML
 	Q_INVOKABLE virtual QObject * getFirst (void) const = 0;
 	Q_INVOKABLE virtual QObject * getLast (void) const = 0;
     virtual QVariantList toVarArray (void) const = 0;
-public:
-	Q_INVOKABLE virtual void Append() = 0;
-	Q_INVOKABLE virtual void Remove(const int row) = 0;
-	Q_INVOKABLE virtual void Move(const int src, const int dest) = 0;
-	Q_INVOKABLE virtual void Insert(const int src) = 0;
-	Q_INVOKABLE virtual void MoveUp(const int row) = 0;
-	Q_INVOKABLE virtual void MoveDown(const int row) = 0;
-	Q_INVOKABLE virtual void Clear() = 0;
-	Q_INVOKABLE virtual QObject * At(const int row) = 0;
-	Q_INVOKABLE virtual int Count() const = 0;
-	Q_INVOKABLE virtual int Size() const = 0;
 
 protected slots: // internal callback
     virtual void onItemPropertyChanged (void) = 0;
@@ -558,41 +549,24 @@ private:
 	void _onItemAboutToBeRemoved(ItemType* item, int row) { emit QQmlObjectListModelBase::itemAboutToBeRemoved(item, row); }
 	void _onItemRemoved(ItemType* item, int row) { emit QQmlObjectListModelBase::itemRemoved(item, row); }
 
-public:
-	Q_INVOKABLE void Append() override { append(new ItemType(this)); }
-	Q_INVOKABLE void Append(ItemType* dict) { append(dict); }
-	Q_INVOKABLE void Remove(ItemType* dict) { remove(dict); }
-	Q_INVOKABLE void Remove(const int row) override	final { remove(row); }
-
-	Q_INVOKABLE void Clear() override final { clear(); }
-	Q_INVOKABLE void Insert(const int src) override final { insert(src, new ItemType(this)); }
-	Q_INVOKABLE void Move(const int row, const int newRow) override { move(row, newRow); }
-	Q_INVOKABLE int Count() const final { return count(); }
-	Q_INVOKABLE int Size() const final { return size(); }
-
 	/** Move row to row-1 */
-	Q_INVOKABLE void MoveUp(const int row) override final
+	void moveUp(const int row) override final
     {
 		if (row > 0 && row < count())
 			move(row, row - 1);
     }
 
 	/** Move row to row+1 */
-	Q_INVOKABLE void MoveDown(const int row) override final
+	void moveDown(const int row) override final
     {
 		if (count() && // There is a least one entry
 			row >= 0 && // We can be from the first
 			row < (count() - 1) // To the last one minus 1
 			)
 		{
-			return MoveUp(row + 1);
+			return moveUp(row + 1);
 		}
     }
-
-	Q_INVOKABLE QObject* At(const int row) override final
-	{
-		return row >= 0 && row < m_items.size() ? m_items.at(row) : nullptr;
-	}
 
 private: // data members
     int                        m_count;
