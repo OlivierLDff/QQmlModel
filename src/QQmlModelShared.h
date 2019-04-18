@@ -37,15 +37,15 @@ class QQMLMODEL_API_ QQmlModelVersion
 {
 public:
 	/** Library Major Version */
-	static uint32_t GetMajor();
+	static uint32_t getMajor();
 	/** Library Minor Version */
-	static uint32_t GetMinor();
+	static uint32_t getMinor();
 	/** Library Patch Version */
-	static uint32_t GetPatch();
+	static uint32_t getPatch();
 	/** Library Tag Version */
-	static uint32_t GetTag();
-	/** Get version in form major.minor.patch.tag */
-	static QString GetVersion();
+	static uint32_t getTag();
+	/** get version in form major.minor.patch.tag */
+	static QString getVersion();
 };
 
 	static void registerQtQmlTricksSmartDataModel(QQmlEngine* engine);
