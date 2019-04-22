@@ -54,23 +54,23 @@ public:
 
 public slots: // virtual methods API for QML
 	/** Returns the number of items in the list. */
-	Q_INVOKABLE virtual int size (void) const = 0;
+	virtual int size (void) const = 0;
 	/** This function is provided for STL compatibility. 
 	 * It is equivalent to isEmpty() and returns true if the list is empty. */
-	Q_INVOKABLE virtual int count (void) const = 0;
+	virtual int count (void) const = 0;
 	/** Returns true if the list contains no items; otherwise returns false. */
-	Q_INVOKABLE virtual bool isEmpty (void) const = 0;
+	virtual bool isEmpty (void) const = 0;
 	/** Returns true if the list contains an occurrence of value; otherwise returns false.
 	 * This function requires the value type to have an implementation of operator==(). */
-	Q_INVOKABLE virtual bool contains (QObject * item) const = 0;
+	virtual bool contains (QObject * item) const = 0;
 	/** Returns the index position of the first occurrence of value in the list, 
 	 * searching forward from index position from. Returns -1 if no item matched.
 	 * \param item ptr the item you want the index of */
-	Q_INVOKABLE virtual int indexOf (QObject * item) const = 0;
+	virtual int indexOf (QObject * item) const = 0;
 	/** Get the role id of name, -1 if role not found */
-	Q_INVOKABLE virtual int roleForName (const QByteArray & name) const = 0;
+	virtual int roleForName (const QByteArray & name) const = 0;
 	/** Removes all items from the list. It won't delete any object */
-	Q_INVOKABLE virtual void clear (void) = 0;
+	virtual void clear (void) = 0;
 	/** Inserts value at the end of the list.
 	 * This is the same as list.insert(size(), value). 
 	 * If this list is not shared, this operation is typically 
@@ -78,7 +78,7 @@ public slots: // virtual methods API for QML
 	 * because QList preallocates extra space on both sides of 
 	 * its internal buffer to allow for fast growth at both ends of the list.
 	 */
-	Q_INVOKABLE virtual void append (QObject * item) = 0;
+	virtual void append (QObject * item) = 0;
 	/** Inserts value at the beginning of the list. 
 	 * This is the same as list.insert(0, value).
 	 * If this list is not shared, this operation is typically very fast
@@ -86,27 +86,27 @@ public slots: // virtual methods API for QML
 	 * on both sides of its internal buffer to allow for fast growth at 
 	 * both ends of the list.
 	 */
-    Q_INVOKABLE virtual void prepend (QObject * item) = 0;
+    virtual void prepend (QObject * item) = 0;
 	/** Inserts value at index position i in the list. 
 	 * If i <= 0, the value is prepended to the list. 
 	 * If i >= size(), the value is appended to the list. */
-	Q_INVOKABLE virtual void insert (int idx, QObject * item) = 0;
+	virtual void insert (int idx, QObject * item) = 0;
 	/** Moves the item at index position from to index position to. 
 	 * This is the same as insert(to, takeAt(from)).
 	 * This function assumes that both from and to are at least 0 but less than size(). 
 	 * To avoid failure, test that both from and to are at least 0 and less than size().
 	 */
-	Q_INVOKABLE virtual void move (int idx, int pos) = 0;
+	virtual void move (int idx, int pos) = 0;
 	virtual void moveDown(const int row) = 0;
 	virtual void moveUp(const int row) = 0;
-	Q_INVOKABLE virtual void remove (QObject * item) = 0;
+	virtual void remove (QObject * item) = 0;
 	/** Removes the item at index position i. 
 	 *i must be a valid index position in the list (i.e., 0 <= i < size()). */
-	Q_INVOKABLE virtual void remove (int idx) = 0;
-	Q_INVOKABLE virtual QObject * get (int idx) const = 0;
-	Q_INVOKABLE virtual QObject * get (const QString & uid) const = 0;
-	Q_INVOKABLE virtual QObject * getFirst (void) const = 0;
-	Q_INVOKABLE virtual QObject * getLast (void) const = 0;
+	virtual void remove (int idx) = 0;
+	virtual QObject * get (int idx) const = 0;
+	virtual QObject * get (const QString & uid) const = 0;
+	virtual QObject * getFirst (void) const = 0;
+	virtual QObject * getLast (void) const = 0;
     virtual QVariantList toVarArray (void) const = 0;
 
 protected slots: // internal callback
@@ -241,22 +241,22 @@ public: // C++ API
     int roleForName (const QByteArray & name) const Q_DECL_FINAL {
         return m_roles.key (name, -1);
     }
-	Q_INVOKABLE int count (void) const Q_DECL_FINAL {
+	int count (void) const Q_DECL_FINAL {
         return m_count;
     }
-	Q_INVOKABLE int size (void) const Q_DECL_FINAL {
+	int size (void) const Q_DECL_FINAL {
         return m_count;
     }
-	Q_INVOKABLE bool isEmpty (void) const Q_DECL_FINAL {
+	bool isEmpty (void) const Q_DECL_FINAL {
         return m_items.isEmpty ();
     }
-	Q_INVOKABLE bool contains (ItemType * item) const {
+	bool contains (ItemType * item) const {
         return m_items.contains (item);
     }
-	Q_INVOKABLE int indexOf (ItemType * item) const {
+	int indexOf (ItemType * item) const {
         return m_items.indexOf (item);
     }
-	Q_INVOKABLE void clear (void) Q_DECL_FINAL {
+	void clear (void) Q_DECL_FINAL {
         if (!m_items.isEmpty ()) {
 			QList<ItemType*> tempList;
 			for (int i = 0; i < m_items.count(); ++i)
@@ -273,7 +273,7 @@ public: // C++ API
 				itemRemoved(tempList.at(i), i);
         }
     }
-	Q_INVOKABLE void append (ItemType * item) {
+	void append (ItemType * item) {
         if (item != Q_NULLPTR) {
             const int pos = m_items.count ();
 			itemAboutToBeInserted(item, pos);
@@ -285,7 +285,7 @@ public: // C++ API
 			itemInserted(item, pos);
         }
     }
-	Q_INVOKABLE void prepend (ItemType * item) {
+	void prepend (ItemType * item) {
         if (item != Q_NULLPTR) {
 			itemAboutToBeInserted(item, 0);
             beginInsertRows (noParent (), 0, 0);
@@ -296,7 +296,7 @@ public: // C++ API
 			itemInserted(item, 0);
         }
     }
-	Q_INVOKABLE void insert (int idx, ItemType * item) {
+	void insert (int idx, ItemType * item) {
         if (item != Q_NULLPTR) {
 			itemAboutToBeInserted(item, idx);
             beginInsertRows (noParent (), idx, idx);
@@ -307,7 +307,7 @@ public: // C++ API
 			itemInserted(item, idx);
         }
     }
-	Q_INVOKABLE void append (const QList<ItemType *> & itemList) {
+	void append (const QList<ItemType *> & itemList) {
         if (!itemList.isEmpty ()) {
             const int pos = m_items.count ();
 			for(int i = 0; i < itemList.count(); ++i)
@@ -325,7 +325,7 @@ public: // C++ API
 				itemInserted(itemList.at(i), i + pos);
         }
     }
-	Q_INVOKABLE void prepend (const QList<ItemType *> & itemList) {
+	void prepend (const QList<ItemType *> & itemList) {
         if (!itemList.isEmpty ()) {
 			for (int i = 0; i < itemList.count(); ++i)
 				itemAboutToBeInserted(itemList.at(i), i);
@@ -343,7 +343,7 @@ public: // C++ API
 				itemInserted(itemList.at(i), i);
         }
     }
-	Q_INVOKABLE void insert (int idx, const QList<ItemType *> & itemList) {
+	void insert (int idx, const QList<ItemType *> & itemList) {
         if (!itemList.isEmpty ()) {
 			for (int i = 0; i < itemList.count(); ++i)
 				itemAboutToBeInserted(itemList.at(i), i + idx);
@@ -361,7 +361,7 @@ public: // C++ API
 				itemInserted(itemList.at(i), i + idx);
         }
     }
-	Q_INVOKABLE void move (int idx, int pos) Q_DECL_FINAL {
+	void move (int idx, int pos) Q_DECL_FINAL {
         if (idx != pos && idx >=0 && pos>=0 && idx < m_items.size() && pos < m_items.size()) {
 			itemAboutToBeMoved(m_items.at(idx), idx, pos);
             beginMoveRows (noParent (), idx, idx, noParent (), (idx < pos ? pos +1 : pos));
@@ -370,13 +370,13 @@ public: // C++ API
 			itemMoved(m_items.at(idx), idx, pos);
         }
     }
-	Q_INVOKABLE void remove (ItemType * item) {
+	void remove (ItemType * item) {
         if (item != Q_NULLPTR) {
             const int idx = m_items.indexOf (item);
             remove (idx);
         }
     }
-	Q_INVOKABLE void remove (int idx) Q_DECL_FINAL {
+	void remove (int idx) Q_DECL_FINAL {
         if (idx >= 0 && idx < m_items.size ()) {
 			itemAboutToBeRemoved(m_items.at(idx), idx);
             beginRemoveRows (noParent (), idx, idx);
