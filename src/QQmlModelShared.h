@@ -48,7 +48,7 @@ public:
 	static QString getVersion();
 };
 
-	static void registerQtQmlTricksSmartDataModel(QQmlEngine* engine);
+	//static void registerQtQmlTricksSmartDataModel(QQmlEngine* engine);
 
 QQMLMODEL_NAMESPACE_END
 
