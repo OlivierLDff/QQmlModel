@@ -48,15 +48,18 @@ template<typename T> QVariantList qListToVariant (const QList<T> & list) {
 class QQmlObjectListModelBase : public QAbstractListModel { // abstract Qt base class
     Q_OBJECT
     Q_PROPERTY (int count READ count NOTIFY countChanged)
+    Q_PROPERTY (int length READ count NOTIFY countChanged)
 
 public:
     explicit QQmlObjectListModelBase (QObject * parent = Q_NULLPTR) : QAbstractListModel (parent) { }
 
 public slots: // virtual methods API for QML
-	/** Returns the number of items in the list. */
+	/** Returns the number of items in the list.
+     * in js model.size() */
 	virtual int size (void) const = 0;
 	/** This function is provided for STL compatibility. 
-	 * It is equivalent to isEmpty() and returns true if the list is empty. */
+	 * It is equivalent to isEmpty() and returns true if the list is empty.
+     * model.count or model.length in js will work */
 	virtual int count (void) const = 0;
 	/** Returns true if the list contains no items; otherwise returns false. */
 	virtual bool isEmpty (void) const = 0;
