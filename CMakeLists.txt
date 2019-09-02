@@ -1,39 +1,40 @@
 #
-#	QQmlModel CMake script by Olivier Le Doeuff
+#   QQmlModel CMake script by Olivier Le Doeuff
 
 #
 ## CMAKE INPUT
 #
-#	- QQMLMODEL_TARGET : Name of the library target. Default : "QQmlModel"
-#	- QQMLMODEL_PROJECT : Name of the project. Default : "QQmlModel"
-#	- QQMLMODEL_BUILD_SHARED : Build shared library [ON OFF]. Default: OFF.
-#	- QQMLMODEL_BUILD_STATIC : Build static library [ON OFF]. Default: ON.
-#	- QQMLMODEL_USE_NAMESPACE : If the library compile with a namespace. Default: OFF.
-#	- QQMLMODEL_NAMESPACE : Namespace for the library. Only relevant if QQMLMODEL_USE_NAMESPACE is ON. Default: "Qqm".
-#	- QQMLMODEL_BUILD_DOC : Build the QQmlModel Doc [ON OFF]. Default: OFF.
-#	- QQMLMODEL_DOXYGEN_BT_REPOSITORY : Repository of DoxygenBt. Default : "https://github.com/OlivierLDff/DoxygenBootstrapped.git"
-#	- QQMLMODEL_DOXYGEN_BT_TAG : Git Tag of DoxygenBt. Default : "v1.3.0"
+#   - QQMLMODEL_TARGET : Name of the library target. Default : "QQmlModel"
+#   - QQMLMODEL_PROJECT : Name of the project. Default : "QQmlModel"
+#   - QQMLMODEL_BUILD_SHARED : Build shared library [ON OFF]. Default: OFF.
+#   - QQMLMODEL_BUILD_STATIC : Build static library [ON OFF]. Default: ON.
+#   - QQMLMODEL_USE_NAMESPACE : If the library compile with a namespace. Default: OFF.
+#   - QQMLMODEL_NAMESPACE : Namespace for the library. Only relevant if QQMLMODEL_USE_NAMESPACE is ON. Default: "Qqm".
+#   - QQMLMODEL_BUILD_DOC : Build the QQmlModel Doc [ON OFF]. Default: OFF.
+#   - QQMLMODEL_DOXYGEN_BT_REPOSITORY : Repository of DoxygenBt. Default : "https://github.com/OlivierLDff/DoxygenBootstrapped.git"
+#   - QQMLMODEL_DOXYGEN_BT_TAG : Git Tag of DoxygenBt. Default : "v1.3.0"
 
 #
 ## CMAKE OUTPUT
 #
-#	- QQMLMODEL_TARGET : Output target to link to. Default: QQmlModel
+#   - QQMLMODEL_TARGET : Output target to link to. Default: QQmlModel
 #
 
 #
 ## VERSION
-#	- 1.0.0 : 05/12/2018 : Initial Work
-# 	- 1.0.1 : Fix DoxygenBootstrapped github link
-# 	- 1.0.4 : Fix CMakeLists filename
+#   - 1.0.0 : 05/12/2018 : Initial Work
+#   - 1.0.1 : Fix DoxygenBootstrapped github link
+#   - 1.0.4 : Fix CMakeLists filename
+#.  - 1.2.0 : QSharedPointer<QObject> list
 
 # ┌──────────────────────────────────────────────────────────────────┐
-# │						  CMAKE PROPERTIES							 │
+# │                       CMAKE PROPERTIES                           │
 # └──────────────────────────────────────────────────────────────────┘
 
 CMAKE_MINIMUM_REQUIRED( VERSION 3.1.0 )
 
 # ┌──────────────────────────────────────────────────────────────────┐
-# │						  PROJECT SETTINGS							 │
+# │                       PROJECT SETTINGS                           │
 # └──────────────────────────────────────────────────────────────────┘
 
 SET( QQMLMODEL_TARGET "QQmlModel" CACHE STRING "Target Name" )
@@ -56,7 +57,7 @@ PROJECT( ${QQMLMODEL_PROJECT} )
 SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # ┌──────────────────────────────────────────────────────────────────┐
-# │						  	QT5 CMAKE 								 │
+# │                         QT5 CMAKE                                │
 # └──────────────────────────────────────────────────────────────────┘
 
 # Find includes in corresponding build directories
@@ -66,40 +67,40 @@ SET( CMAKE_AUTOMOC ON )
  # https://cmake.org/cmake/help/v3.0/prop_tgt/AUTORCC.html#prop_tgt:AUTORCC
 SET( CMAKE_AUTORCC ON )
 #required by Qt5
-set (CMAKE_CXX_STANDARD 11) 
+set (CMAKE_CXX_STANDARD 11)
 
 # Find correct qt directory
 IF( QT_DIR )
-	SET( CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH};${QT_DIR}" )
+    SET( CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH};${QT_DIR}" )
 ENDIF( QT_DIR )
 
 FIND_PACKAGE(Qt5Core CONFIG REQUIRED CMAKE_FIND_ROOT_PATH_BOTH)
 FIND_PACKAGE(Qt5Qml CONFIG REQUIRED CMAKE_FIND_ROOT_PATH_BOTH)
 
 # ┌──────────────────────────────────────────────────────────────────┐
-# │						  VERSION 	 								 │
+# │                       VERSION                                    │
 # └──────────────────────────────────────────────────────────────────┘
 
 # Project version must be set here
 SET(QQMLMODEL_VERSION_MAJOR 1)
-SET(QQMLMODEL_VERSION_MINOR 1)
-SET(QQMLMODEL_VERSION_PATCH 2)
+SET(QQMLMODEL_VERSION_MINOR 2)
+SET(QQMLMODEL_VERSION_PATCH 0)
 SET(QQMLMODEL_VERSION ${QQMLMODEL_VERSION_MAJOR}.${QQMLMODEL_VERSION_MINOR}.${QQMLMODEL_VERSION_PATCH} CACHE STRING "Version")
 
 IF( EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/.git" )
-	EXECUTE_PROCESS(
-		COMMAND git describe --always
-		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-		OUTPUT_VARIABLE QQMLMODEL_VERSION_TAG
-		OUTPUT_STRIP_TRAILING_WHITESPACE
-	)
+    EXECUTE_PROCESS(
+        COMMAND git describe --always
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        OUTPUT_VARIABLE QQMLMODEL_VERSION_TAG
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
 ELSE()
-	SET( QQMLMODEL_VERSION_TAG 00000000 )
+    SET( QQMLMODEL_VERSION_TAG 00000000 )
 ENDIF()
 SET( QQMLMODEL_VERSION_TAG_HEX 0x${QQMLMODEL_VERSION_TAG})
 
 # ┌──────────────────────────────────────────────────────────────────┐
-# │						  STATUS 	 								 │
+# │                       STATUS                                     │
 # └──────────────────────────────────────────────────────────────────┘
 
 MESSAGE( STATUS  "------ ${QQMLMODEL_TARGET} Configuration ${QQMLMODEL_VERSION} ------" )
@@ -127,46 +128,47 @@ MESSAGE( FATAL_ERROR "Set either Build shared or build static to ON, can't build
 ENDIF((QQMLMODEL_BUILD_SHARED AND QQMLMODEL_BUILD_STATIC) OR (NOT QQMLMODEL_BUILD_SHARED AND NOT QQMLMODEL_BUILD_STATIC))
 
 # ┌──────────────────────────────────────────────────────────────────┐
-# │						  SOURCES 	 								 │
+# │                       SOURCES                                    │
 # └──────────────────────────────────────────────────────────────────┘
 
-SET( QQMLMODEL_SRCS 
-	# Main
-	${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlObjectListModel.h
-	${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlVariantListModel.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlVariantListModel.h
-	${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlModelShared.h
-	${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlModelShared.cpp
+SET( QQMLMODEL_SRCS
+    # Main
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlObjectListModel.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlSharedObjectListModel.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlVariantListModel.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlVariantListModel.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlModelShared.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlModelShared.cpp
 
-	${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlObjectListModel
-	${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlVariantListModel
-	)
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlObjectListModel
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/QQmlVariantListModel
+    )
 
 # ┌──────────────────────────────────────────────────────────────────┐
-# │						  TARGET 	 								 │
+# │                       TARGET                                     │
 # └──────────────────────────────────────────────────────────────────┘
 
 IF(QQMLMODEL_BUILD_SHARED)
-	IF( MSVC )
-	INCLUDE (GenerateExportHeader)
-	ENDIF( MSVC )
+    IF( MSVC )
+    INCLUDE (GenerateExportHeader)
+    ENDIF( MSVC )
 
-	ADD_LIBRARY( ${QQMLMODEL_TARGET} SHARED ${QQMLMODEL_SRCS} )
+    ADD_LIBRARY( ${QQMLMODEL_TARGET} SHARED ${QQMLMODEL_SRCS} )
 
-	IF( MSVC )
-	GENERATE_EXPORT_HEADER( ${QQMLMODEL_TARGET}
-		BASE_NAME ${QQMLMODEL_TARGET}
-		EXPORT_MACRO_NAME ${QQMLMODEL_TARGET}_EXPORT
-		EXPORT_FILE_NAME ${QQMLMODEL_TARGET}_Export.h
-		STATIC_DEFINE ${QQMLMODEL_TARGET}_BUILT_AS_STATIC
-	)
-	ENDIF( MSVC )
-	
-	TARGET_COMPILE_DEFINITIONS( ${QQMLMODEL_TARGET} PRIVATE -DQQMLMODEL_SHARED )
+    IF( MSVC )
+    GENERATE_EXPORT_HEADER( ${QQMLMODEL_TARGET}
+        BASE_NAME ${QQMLMODEL_TARGET}
+        EXPORT_MACRO_NAME ${QQMLMODEL_TARGET}_EXPORT
+        EXPORT_FILE_NAME ${QQMLMODEL_TARGET}_Export.h
+        STATIC_DEFINE ${QQMLMODEL_TARGET}_BUILT_AS_STATIC
+    )
+    ENDIF( MSVC )
+
+    TARGET_COMPILE_DEFINITIONS( ${QQMLMODEL_TARGET} PRIVATE -DQQMLMODEL_SHARED )
 
 ELSE()
-	ADD_LIBRARY( ${QQMLMODEL_TARGET} STATIC ${QQMLMODEL_SRCS} )
-	TARGET_COMPILE_DEFINITIONS( ${QQMLMODEL_TARGET} PUBLIC -DQQMLMODEL_STATIC )
+    ADD_LIBRARY( ${QQMLMODEL_TARGET} STATIC ${QQMLMODEL_SRCS} )
+    TARGET_COMPILE_DEFINITIONS( ${QQMLMODEL_TARGET} PUBLIC -DQQMLMODEL_STATIC )
 ENDIF()
 
 TARGET_INCLUDE_DIRECTORIES( ${QQMLMODEL_TARGET} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src )
@@ -183,7 +185,7 @@ ENDIF(QQMLMODEL_USE_NAMESPACE)
 qt5_use_modules( ${QQMLMODEL_TARGET} Core Qml )
 
 # ┌──────────────────────────────────────────────────────────────────┐
-# │						  DOXYGEN 									 │
+# │                       DOXYGEN                                    │
 # └──────────────────────────────────────────────────────────────────┘
 
 IF(QQMLMODEL_BUILD_DOC)

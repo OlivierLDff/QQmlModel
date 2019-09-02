@@ -57,7 +57,7 @@ public slots: // virtual methods API for QML
 	/** Returns the number of items in the list.
      * in js model.size() */
 	virtual int size (void) const = 0;
-	/** This function is provided for STL compatibility. 
+	/** This function is provided for STL compatibility.
 	 * It is equivalent to isEmpty() and returns true if the list is empty.
      * model.count or model.length in js will work */
 	virtual int count (void) const = 0;
@@ -66,7 +66,7 @@ public slots: // virtual methods API for QML
 	/** Returns true if the list contains an occurrence of value; otherwise returns false.
 	 * This function requires the value type to have an implementation of operator==(). */
 	virtual bool contains (QObject * item) const = 0;
-	/** Returns the index position of the first occurrence of value in the list, 
+	/** Returns the index position of the first occurrence of value in the list,
 	 * searching forward from index position from. Returns -1 if no item matched.
 	 * \param item ptr the item you want the index of */
 	virtual int indexOf (QObject * item) const = 0;
@@ -75,35 +75,35 @@ public slots: // virtual methods API for QML
 	/** Removes all items from the list. It won't delete any object */
 	virtual void clear (void) = 0;
 	/** Inserts value at the end of the list.
-	 * This is the same as list.insert(size(), value). 
-	 * If this list is not shared, this operation is typically 
-	 * very fast (amortized constant time), 
-	 * because QList preallocates extra space on both sides of 
+	 * This is the same as list.insert(size(), value).
+	 * If this list is not shared, this operation is typically
+	 * very fast (amortized constant time),
+	 * because QList preallocates extra space on both sides of
 	 * its internal buffer to allow for fast growth at both ends of the list.
 	 */
 	virtual void append (QObject * item) = 0;
-	/** Inserts value at the beginning of the list. 
+	/** Inserts value at the beginning of the list.
 	 * This is the same as list.insert(0, value).
 	 * If this list is not shared, this operation is typically very fast
 	 * (amortized constant time), because QList preallocates extra space
-	 * on both sides of its internal buffer to allow for fast growth at 
+	 * on both sides of its internal buffer to allow for fast growth at
 	 * both ends of the list.
 	 */
     virtual void prepend (QObject * item) = 0;
-	/** Inserts value at index position i in the list. 
-	 * If i <= 0, the value is prepended to the list. 
+	/** Inserts value at index position i in the list.
+	 * If i <= 0, the value is prepended to the list.
 	 * If i >= size(), the value is appended to the list. */
 	virtual void insert (int idx, QObject * item) = 0;
-	/** Moves the item at index position from to index position to. 
+	/** Moves the item at index position from to index position to.
 	 * This is the same as insert(to, takeAt(from)).
-	 * This function assumes that both from and to are at least 0 but less than size(). 
+	 * This function assumes that both from and to are at least 0 but less than size().
 	 * To avoid failure, test that both from and to are at least 0 and less than size().
 	 */
 	virtual void move (int idx, int pos) = 0;
 	virtual void moveDown(const int row) = 0;
 	virtual void moveUp(const int row) = 0;
 	virtual void remove (QObject * item) = 0;
-	/** Removes the item at index position i. 
+	/** Removes the item at index position i.
 	 *i must be a valid index position in the list (i.e., 0 <= i < size()). */
 	virtual void remove (int idx) = 0;
 	virtual QObject * get (int idx) const = 0;
@@ -133,7 +133,7 @@ signals:
 	void itemRemoved(QObject* item, int row);
 };
 
-template<class ItemType> class QQmlObjectListModel : public QQmlObjectListModelBase 
+template<class ItemType> class QQmlObjectListModel : public QQmlObjectListModelBase
 {
 public:
     explicit QQmlObjectListModel (QObject *          parent      = Q_NULLPTR,
