@@ -37,6 +37,9 @@ CMAKE_MINIMUM_REQUIRED( VERSION 3.1.0 )
 # │                       PROJECT SETTINGS                           │
 # └──────────────────────────────────────────────────────────────────┘
 
+
+message(WARNING "This library is DEPRECATED, you should move to ObjectListModel (https://github.com/OlivierLDff/ObjectListModel)")
+
 SET( QQMLMODEL_TARGET "QQmlModel" CACHE STRING "Target Name" )
 SET( QQMLMODEL_PROJECT "QQmlModel" CACHE STRING "Project Name")
 SET( QQMLMODEL_BUILD_SHARED OFF CACHE BOOL "Build shared lib for QQmlModel" )
